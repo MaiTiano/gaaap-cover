@@ -110,7 +110,6 @@ body {
 }
 .scale-wrapper { transform-origin: center center; }
 
-/* 封面尺寸 */
 .cover-render {
   width: 1080px; height: 1440px; position: relative;
   overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
@@ -118,54 +117,46 @@ body {
 }
 
 .watermark {
-  position: absolute; bottom: 35px; right: 35px;
-  font-size: 26px; font-weight: bold;
+  position: absolute; bottom: 30px; right: 30px;
+  font-size: 24px; font-weight: bold;
   color: rgba(255,255,255,0.5); letter-spacing: 2px; z-index: 20; pointer-events: none;
 }
 
-/* ===== 模板1：上下分割 ===== */
+/* ===== 模板1：紧凑上下 ===== */
 .tpl-1 { display: flex; flex-direction: column; }
 .tpl-1 .text-area {
-  height: 55%; display: flex; flex-direction: column;
-  justify-content: center; align-items: center; padding: 50px;
+  height: 32%; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 30px 40px;
 }
 .tpl-1 .main-title {
-  font-size: 68px; font-weight: bold; color: #FFD600;
-  text-align: center; line-height: 1.2; margin-bottom: 24px; white-space: pre-line;
+  font-size: 72px; font-weight: bold; color: #FFD600;
+  text-align: center; line-height: 1.15; margin-bottom: 16px; white-space: pre-line;
 }
 .tpl-1 .sub-title {
   font-size: 30px; color: #F5F5F5;
-  text-align: center; line-height: 1.5; white-space: pre-line;
+  text-align: center; line-height: 1.4; white-space: pre-line;
 }
-.tpl-1 .divider { width: 70%; height: 3px; background: #FFD600; margin: 30px auto 0; }
+.tpl-1 .divider { width: 50%; height: 3px; background: #FFD600; margin-top: 20px; }
 .tpl-1 .photo-area {
-  height: 45%; background: #0A0A0A; position: relative; overflow: hidden;
-}
-.tpl-1 .photo-placeholder {
-  position: absolute; inset: 0; display: flex;
-  justify-content: center; align-items: center; color: #333; font-size: 20px; letter-spacing: 2px;
+  height: 68%; position: relative; overflow: hidden; background: #0A0A0A;
 }
 
-/* ===== 模板2：左右分割 ===== */
+/* ===== 模板2：紧凑左右 ===== */
 .tpl-2 { display: flex; flex-direction: row; }
 .tpl-2 .text-area {
-  width: 45%; display: flex; flex-direction: column;
-  justify-content: center; align-items: center; padding: 40px;
+  width: 35%; display: flex; flex-direction: column;
+  justify-content: center; align-items: center; padding: 30px;
 }
 .tpl-2 .main-title {
-  font-size: 62px; font-weight: bold; color: #FFD600;
-  text-align: center; line-height: 1.3; white-space: pre-line;
+  font-size: 58px; font-weight: bold; color: #FFD600;
+  text-align: center; line-height: 1.2; white-space: pre-line;
 }
 .tpl-2 .sub-title {
-  font-size: 28px; color: #F5F5F5; margin-top: 30px;
+  font-size: 24px; color: #F5F5F5; margin-top: 20px;
   text-align: center; white-space: pre-line;
 }
 .tpl-2 .photo-area {
-  width: 55%; background: #0A0A0A; position: relative; overflow: hidden;
-}
-.tpl-2 .photo-placeholder {
-  position: absolute; inset: 0; display: flex;
-  justify-content: center; align-items: center; color: #333; font-size: 20px; text-align: center; line-height: 1.8;
+  width: 65%; position: relative; overflow: hidden; background: #0A0A0A;
 }
 
 /* ===== 模板3：全图叠加 ===== */
@@ -173,39 +164,39 @@ body {
 .tpl-3 .photo-area {
   position: absolute; inset: 0; overflow: hidden;
 }
-.tpl-3 .photo-placeholder {
-  position: absolute; inset: 0; display: flex;
-  justify-content: center; align-items: center; color: #333; font-size: 20px; letter-spacing: 2px;
-}
 .tpl-3 .overlay {
-  position: absolute; top: 0; left: 0; width: 100%; height: 50%;
-  background: linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 35%, rgba(10,10,10,0.7) 75%, rgba(10,10,10,0) 100%);
+  position: absolute; top: 0; left: 0; width: 100%; height: 45%;
+  background: linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 30%, rgba(10,10,10,0.7) 70%, rgba(10,10,10,0) 100%);
   z-index: 5; pointer-events: none;
 }
 .tpl-3 .text-area {
-  position: absolute; top: 0; left: 0; width: 100%; height: 45%;
+  position: absolute; top: 0; left: 0; width: 100%; height: 40%;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
-  padding: 50px; z-index: 6;
+  padding: 40px; z-index: 6;
 }
 .tpl-3 .main-title {
-  font-size: 58px; font-weight: bold; color: #FFD600;
-  text-align: center; line-height: 1.2; margin-bottom: 20px; white-space: pre-line;
+  font-size: 64px; font-weight: bold; color: #FFD600;
+  text-align: center; line-height: 1.15; margin-bottom: 16px; white-space: pre-line;
 }
 .tpl-3 .sub-title {
   font-size: 28px; color: #F5F5F5; text-align: center;
-  line-height: 1.5; margin-bottom: 20px; white-space: pre-line;
+  line-height: 1.4; margin-bottom: 16px; white-space: pre-line;
 }
-.tpl-3 .divider { width: 60%; height: 3px; background: #FFD600; }
+.tpl-3 .divider { width: 50%; height: 3px; background: #FFD600; }
 
-/* 照片相关 */
+/* 照片区域通用 */
 .photo-frame {
-  position: absolute; overflow: hidden; border: 1px solid #222;
+  position: absolute; overflow: hidden;
 }
 .photo-img {
   position: absolute; cursor: grab; user-select: none;
   -webkit-user-drag: none;
 }
 .photo-img:active { cursor: grabbing; }
+.photo-placeholder {
+  position: absolute; inset: 0; display: flex;
+  justify-content: center; align-items: center; color: #333; font-size: 20px; letter-spacing: 2px;
+}
 
 .hidden { display: none !important; }
 
@@ -228,15 +219,15 @@ body {
 
 <div class="header">
   <h1>GAAAP 小红书封面生成器</h1>
-  <span class="brand">多图拼图 · 拖拽平移</span>
+  <span class="brand">紧凑排版 · 黑底黄字 · 多图拼图</span>
 </div>
 
 <div class="main">
   <div class="panel">
     <h3>选择模板</h3>
     <div class="template-selector">
-      <button class="template-btn active" data-template="1">上下分割</button>
-      <button class="template-btn" data-template="2">左右分割</button>
+      <button class="template-btn active" data-template="1">紧凑上下</button>
+      <button class="template-btn" data-template="2">紧凑左右</button>
       <button class="template-btn" data-template="3">全图叠加</button>
     </div>
 
@@ -308,7 +299,7 @@ body {
 
   <div class="preview-area" id="previewArea">
     <div class="scale-wrapper" id="scaleWrapper">
-      <!-- 模板1 -->
+      <!-- 模板1：紧凑上下 -->
       <div class="cover-render tpl-1" id="tpl1">
         <div class="text-area">
           <div class="main-title" id="t1-main">44岁硬拉100kg</div>
@@ -318,7 +309,7 @@ body {
         <div class="photo-area" id="t1-photo-area"></div>
         <div class="watermark">GAAAP</div>
       </div>
-      <!-- 模板2 -->
+      <!-- 模板2：紧凑左右 -->
       <div class="cover-render tpl-2 hidden" id="tpl2">
         <div class="text-area">
           <div class="main-title" id="t2-main">年龄是<br>数字<br>力量是<br>选择</div>
@@ -327,7 +318,7 @@ body {
         <div class="photo-area" id="t2-photo-area"></div>
         <div class="watermark">GAAAP</div>
       </div>
-      <!-- 模板3 -->
+      <!-- 模板3：全图叠加 -->
       <div class="cover-render tpl-3 hidden" id="tpl3">
         <div class="photo-area" id="t3-photo-area"></div>
         <div class="overlay"></div>
@@ -347,15 +338,15 @@ body {
 <script>
 // ===================== 状态 =====================
 let currentTemplate = 1;
-let photos = []; // {src, naturalW, naturalH, left, top, scale}
+let photos = []; // {src, naturalW, naturalH, left, top}
 let photoScale = 100;
 let isDragging = false, dragPhoto = null;
 let dragStartX = 0, dragStartY = 0, dragPhotoStartLeft = 0, dragPhotoStartTop = 0;
 
 const AREA_SIZE = {
-  1: { w: 1080, h: 648 },  // 1440 * 0.45
-  2: { w: 594, h: 1440 },  // 1080 * 0.55
-  3: { w: 1080, h: 1440 }  // 全屏
+  1: { w: 1080, h: 980 },   // 1440 * 0.68
+  2: { w: 702, h: 1440 },   // 1080 * 0.65
+  3: { w: 1080, h: 1440 }   // 全屏
 };
 
 // ===================== 模板切换 =====================
@@ -457,25 +448,31 @@ function rebuildLayout() {
     const frame = document.createElement('div');
     frame.className = 'photo-frame';
 
-    // 计算 frame 位置和尺寸
+    // 计算 frame 位置，无间隙填满
     let fx, fy, fw, fh;
-    if (count === 1) { fx = 0; fy = 0; fw = cw; fh = ch; }
-    else if (count === 2) {
-      if (currentTemplate === 2) { fx = 0; fy = i * ch / 2; fw = cw; fh = ch / 2; }
-      else { fx = i * cw / 2; fy = 0; fw = cw / 2; fh = ch; }
-    }
-    else if (count === 3) {
+    if (count === 1) {
+      fx = 0; fy = 0; fw = cw; fh = ch;
+    } else if (count === 2) {
+      if (currentTemplate === 2) { // 竖向模板，上下分
+        fx = 0; fy = i * ch / 2; fw = cw; fh = ch / 2;
+      } else { // 横向模板，左右分
+        fx = i * cw / 2; fy = 0; fw = cw / 2; fh = ch;
+      }
+    } else if (count === 3) {
       if (currentTemplate === 2) {
+        // 左竖：上50% + 下25/25
         if (i === 0) { fx = 0; fy = 0; fw = cw; fh = ch / 2; }
         else { fx = (i - 1) * cw / 2; fy = ch / 2; fw = cw / 2; fh = ch / 2; }
       } else {
+        // 上横：上50%全宽 + 下25/25
         if (i === 0) { fx = 0; fy = 0; fw = cw; fh = ch / 2; }
         else { fx = (i - 1) * cw / 2; fy = ch / 2; fw = cw / 2; fh = ch / 2; }
       }
-    }
-    else { // 4张 2x2
+    } else {
+      // 4张 2x2 网格
       const col = i % 2, row = Math.floor(i / 2);
-      fx = col * cw / 2; fy = row * ch / 2; fw = cw / 2; fh = ch / 2;
+      fx = col * cw / 2; fy = row * ch / 2;
+      fw = cw / 2; fh = ch / 2;
     }
 
     frame.style.cssText = `left:${fx}px;top:${fy}px;width:${fw}px;height:${fh}px;`;
@@ -487,7 +484,7 @@ function rebuildLayout() {
     img.draggable = false;
     frame.appendChild(img);
 
-    // cover 计算
+    // cover 计算，保持比例
     const imgAspect = p.naturalW / p.naturalH;
     const frameAspect = fw / fh;
     let renderW, renderH;
@@ -529,13 +526,13 @@ function onDrag(e) {
   const cx = e.touches ? e.touches[0].clientX : e.clientX;
   const cy = e.touches ? e.touches[0].clientY : e.clientY;
   const dx = cx - dragStartX, dy = cy - dragStartY;
-  const img = dragPhoto.imgEl || event.target;
+  const img = document.querySelector('.photo-img:active') || (dragPhoto && dragPhoto.lastImg);
+  if (!img) return;
   const parent = img.parentElement;
   const imgW = img.offsetWidth, imgH = img.offsetHeight;
   const frameW = parent.offsetWidth, frameH = parent.offsetHeight;
   let newLeft = dragPhotoStartLeft + dx;
   let newTop = dragPhotoStartTop + dy;
-  // 限制在容器内
   newLeft = Math.min(0, Math.max(newLeft, frameW - imgW));
   newTop = Math.min(0, Math.max(newTop, frameH - imgH));
   img.style.left = newLeft + 'px';
@@ -544,13 +541,13 @@ function onDrag(e) {
 
 function endDrag(e) {
   if (!isDragging || !dragPhoto) return;
-  const img = document.querySelector('.photo-img:active') || document.querySelector('.photo-frame:last-child .photo-img');
-  if (img && img.parentElement) {
-    const parent = img.parentElement;
-    const imgRect = img.getBoundingClientRect();
+  const activeImg = document.querySelector('.photo-img:active');
+  if (activeImg && activeImg.parentElement) {
+    const parent = activeImg.parentElement;
+    const imgRect = activeImg.getBoundingClientRect();
     const parentRect = parent.getBoundingClientRect();
-    const centerOffX = (parent.offsetWidth - img.offsetWidth) / 2;
-    const centerOffY = (parent.offsetHeight - img.offsetHeight) / 2;
+    const centerOffX = (parent.offsetWidth - activeImg.offsetWidth) / 2;
+    const centerOffY = (parent.offsetHeight - activeImg.offsetHeight) / 2;
     dragPhoto.left = (imgRect.left - parentRect.left) - centerOffX;
     dragPhoto.top = (imgRect.top - parentRect.top) - centerOffY;
   }
