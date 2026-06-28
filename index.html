@@ -7,16 +7,16 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  background: #0A0A0A;
+  background: #1C1C1E;
   color: #F5F5F5;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-/* 顶部导航 */
 .header {
   background: #0A0A0A;
   border-bottom: 2px solid #FFD600;
@@ -26,425 +26,260 @@ body {
   align-items: center;
   flex-shrink: 0;
 }
-.header h1 {
-  font-size: 22px;
-  color: #FFD600;
-  letter-spacing: 2px;
-}
-.header .brand {
-  font-size: 14px;
-  color: #888;
-}
+.header h1 { font-size: 22px; color: #FFD600; letter-spacing: 2px; }
+.header .brand { font-size: 14px; color: #888; }
 
-/* 主布局 */
-.main {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
+.main { display: flex; flex: 1; min-height: 0; overflow: hidden; }
 
-/* 左侧编辑面板 */
 .panel {
-  width: 360px;
-  background: #141414;
-  border-right: 1px solid #222;
+  width: 380px;
+  background: #0A0A0A;
+  border-right: 1px solid #2a2a2a;
   padding: 20px;
   overflow-y: auto;
   flex-shrink: 0;
 }
 .panel h3 {
-  font-size: 14px;
-  color: #FFD600;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 13px; color: #FFD600; margin-bottom: 10px;
+  text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 1px solid #2a2a2a; padding-bottom: 6px;
 }
 
-/* 模板选择 */
-.template-selector {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-}
+.template-selector { display: flex; gap: 6px; margin-bottom: 16px; }
 .template-btn {
-  flex: 1;
-  padding: 10px;
-  background: #1C1C1E;
-  border: 2px solid #333;
-  color: #888;
-  font-size: 13px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.2s;
-  text-align: center;
+  flex: 1; padding: 10px 4px; background: #1C1C1E; border: 2px solid #333;
+  color: #888; font-size: 12px; cursor: pointer; border-radius: 6px;
+  transition: all 0.2s; text-align: center;
 }
 .template-btn:hover { border-color: #FFD600; color: #FFD600; }
 .template-btn.active { border-color: #FFD600; color: #FFD600; background: #2a2500; }
 
-/* 输入组 */
-.input-group {
-  margin-bottom: 16px;
-}
-.input-group label {
-  display: block;
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 6px;
-}
+.input-group { margin-bottom: 14px; }
+.input-group label { display: block; font-size: 12px; color: #888; margin-bottom: 5px; }
 .input-group input[type="text"],
-.input-group textarea,
-.input-group select {
-  width: 100%;
-  padding: 10px 12px;
-  background: #1C1C1E;
-  border: 1px solid #333;
-  color: #F5F5F5;
-  font-size: 14px;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.2s;
+.input-group select,
+.input-group textarea {
+  width: 100%; padding: 10px 12px; background: #1C1C1E;
+  border: 1px solid #333; color: #F5F5F5; font-size: 14px;
+  border-radius: 6px; outline: none; transition: border-color 0.2s;
 }
-.input-group input:focus,
-.input-group textarea:focus,
-.input-group select:focus { border-color: #FFD600; }
-.input-group textarea { resize: vertical; min-height: 60px; }
-.input-group select {
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  padding-right: 30px;
-}
-.input-group select option {
-  background: #1C1C1E;
-  color: #F5F5F5;
-}
+.input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: #FFD600; }
+.input-group select { cursor: pointer; appearance: none; }
+.input-group select option { background: #1C1C1E; color: #F5F5F5; }
+.input-group textarea { resize: vertical; min-height: 50px; }
 
-/* 字体预览 */
 .font-preview {
-  font-size: 18px;
-  color: #FFD600;
-  margin-top: 8px;
-  padding: 8px 12px;
-  background: #1C1C1E;
-  border-radius: 4px;
+  font-size: 16px; color: #FFD600; margin-top: 6px;
+  padding: 8px 12px; background: #1C1C1E; border-radius: 6px;
   border: 1px solid #333;
 }
 
-/* 照片上传 */
 .upload-area {
-  border: 2px dashed #333;
-  border-radius: 6px;
-  padding: 24px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-bottom: 20px;
+  border: 2px dashed #333; border-radius: 8px; padding: 20px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  margin-bottom: 14px; background: #1C1C1E;
 }
 .upload-area:hover { border-color: #FFD600; }
 .upload-area.dragover { border-color: #FFD600; background: #2a2500; }
-.upload-area .icon { font-size: 32px; color: #FFD600; margin-bottom: 8px; }
+.upload-area .icon { font-size: 28px; color: #FFD600; margin-bottom: 6px; }
 .upload-area .text { font-size: 13px; color: #888; }
-.upload-area .hint { font-size: 11px; color: #555; margin-top: 6px; }
+.upload-area .hint { font-size: 11px; color: #555; margin-top: 4px; }
 .upload-area input[type="file"] { display: none; }
 
-/* 照片控制 */
 .photo-controls {
-  display: none;
-  background: #1C1C1E;
-  border-radius: 6px;
-  padding: 12px;
-  margin-bottom: 16px;
+  display: none; background: #1C1C1E; border-radius: 8px;
+  padding: 12px; margin-bottom: 14px; border: 1px solid #333;
 }
 .photo-controls.show { display: block; }
 .photo-controls .control-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
 }
-.photo-controls .control-row:last-child { margin-bottom: 0; }
-.photo-controls label {
-  font-size: 12px;
-  color: #888;
-  width: 60px;
-  flex-shrink: 0;
-}
-.photo-controls input[type="range"] {
-  flex: 1;
-  accent-color: #FFD600;
-}
-.photo-controls .value {
-  font-size: 12px;
-  color: #FFD600;
-  width: 50px;
-  text-align: right;
-}
-.photo-controls .btn-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
+.photo-controls label { font-size: 12px; color: #888; width: 50px; flex-shrink: 0; }
+.photo-controls input[type="range"] { flex: 1; accent-color: #FFD600; }
+.photo-controls .value { font-size: 12px; color: #FFD600; width: 40px; text-align: right; }
+.photo-controls .btn-row { display: flex; gap: 6px; margin-top: 8px; }
 .photo-controls .btn-row button {
-  flex: 1;
-  padding: 6px 10px;
-  background: #333;
-  border: none;
-  color: #F5F5F5;
-  font-size: 12px;
-  border-radius: 4px;
-  cursor: pointer;
+  flex: 1; padding: 6px; background: #333; border: none;
+  color: #F5F5F5; font-size: 12px; border-radius: 4px; cursor: pointer;
 }
 .photo-controls .btn-row button:hover { background: #FFD600; color: #0A0A0A; }
 
-/* 导出按钮 */
+.drag-hint {
+  background: #2a2500; border: 1px solid #FFD600;
+  border-radius: 6px; padding: 8px 12px; margin-bottom: 12px;
+  font-size: 12px; color: #FFD600; display: none;
+}
+.drag-hint.show { display: block; }
+
 .export-btn {
-  width: 100%;
-  padding: 14px;
-  background: #FFD600;
-  color: #0A0A0A;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 10px;
+  width: 100%; padding: 14px; background: #FFD600;
+  color: #0A0A0A; font-size: 16px; font-weight: bold;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all 0.2s; margin-top: 8px;
 }
 .export-btn:hover { background: #e6c200; }
-.export-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
 
-/* 右侧预览 */
 .preview-area {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  background: #0A0A0A;
-  overflow: auto;
+  flex: 1; display: flex; justify-content: center; align-items: center;
+  padding: 40px; background: #0A0A0A; overflow: auto;
 }
+.scale-wrapper { transform-origin: center center; }
 
-/* 封面渲染区域（精确1080x1440） */
 .cover-render {
-  width: 1080px;
-  height: 1440px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 20px 80px rgba(0,0,0,0.8);
-  flex-shrink: 0;
+  width: 1080px; height: 1440px; position: relative;
+  overflow: hidden; box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+  flex-shrink: 0; background: #1C1C1E;
 }
 
-/* 缩放容器 */
-.scale-wrapper {
-  transform-origin: center center;
-}
-
-/* 通用元素 */
 .watermark {
-  position: absolute;
-  bottom: 40px;
-  right: 40px;
-  font-size: 28px;
-  font-weight: bold;
-  color: rgba(255,255,255,0.6);
-  letter-spacing: 2px;
-  z-index: 10;
-  pointer-events: none;
+  position: absolute; bottom: 40px; right: 40px;
+  font-size: 28px; font-weight: bold;
+  color: rgba(255,255,255,0.5); letter-spacing: 2px;
+  z-index: 20; pointer-events: none;
 }
 
-/* 模板1：上下分割 */
-.tpl-1 { background: #0A0A0A; display: flex; flex-direction: column; }
+/* ============ 模板：居中留白卡片 ============ */
+.tpl-1 {
+  background: #1C1C1E; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 80px 60px;
+}
+.tpl-1 .card {
+  width: 100%; background: #141414; border-radius: 16px;
+  border: 1px solid #2a2a2a; overflow: hidden;
+}
 .tpl-1 .text-area {
-  height: 55%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
+  padding: 50px 40px; text-align: center;
 }
 .tpl-1 .main-title {
-  font-size: 72px;
-  font-weight: bold;
-  color: #FFD600;
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 30px;
-  white-space: pre-line;
+  font-size: 64px; font-weight: bold; color: #FFD600;
+  line-height: 1.2; margin-bottom: 20px; white-space: pre-line;
 }
 .tpl-1 .sub-title {
-  font-size: 32px;
-  color: #F5F5F5;
-  text-align: center;
-  line-height: 1.5;
-  white-space: pre-line;
+  font-size: 28px; color: #F5F5F5;
+  line-height: 1.5; white-space: pre-line;
 }
 .tpl-1 .divider {
-  width: 80%;
-  height: 4px;
-  background: #FFD600;
-  margin: 40px auto;
+  width: 60%; height: 3px; background: #FFD600;
+  margin: 30px auto 0;
 }
 .tpl-1 .photo-area {
-  height: 45%;
-  background: #1C1C1E;
-  position: relative;
-  overflow: hidden;
+  height: 480px; background: #0A0A0A;
+  position: relative; overflow: hidden;
+  border-top: 1px solid #2a2a2a;
 }
-.tpl-1 .photo-area .photo-placeholder {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #333;
-  font-size: 24px;
-  letter-spacing: 2px;
-}
-.tpl-1 .photo-area .photo-img {
-  position: absolute;
-  display: none;
-  /* width/height 由 JS 精确计算，不使用 object-fit 和 transform */
+.tpl-1 .photo-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  color: #333; font-size: 20px; letter-spacing: 2px;
 }
 
-/* 模板2：左右分割 */
-.tpl-2 { background: #0A0A0A; display: flex; flex-direction: row; }
+/* ============ 模板：左右卡片留白 ============ */
+.tpl-2 {
+  background: #1C1C1E; display: flex; flex-direction: row;
+  align-items: center; justify-content: center; gap: 40px;
+  padding: 80px 60px;
+}
+.tpl-2 .card {
+  width: 45%; background: #141414; border-radius: 16px;
+  border: 1px solid #2a2a2a; overflow: hidden;
+  height: 1280px; display: flex; flex-direction: column;
+}
 .tpl-2 .text-area {
-  width: 45%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
+  padding: 40px 30px; flex: 1; display: flex;
+  flex-direction: column; justify-content: center; align-items: center;
 }
 .tpl-2 .main-title {
-  font-size: 68px;
-  font-weight: bold;
-  color: #FFD600;
-  text-align: center;
-  line-height: 1.3;
-  white-space: pre-line;
+  font-size: 56px; font-weight: bold; color: #FFD600;
+  line-height: 1.3; text-align: center; white-space: pre-line;
 }
 .tpl-2 .sub-title {
-  font-size: 32px;
-  color: #F5F5F5;
-  text-align: center;
-  margin-top: 40px;
-  white-space: pre-line;
+  font-size: 24px; color: #F5F5F5; margin-top: 30px;
+  text-align: center; white-space: pre-line;
 }
 .tpl-2 .photo-area {
-  width: 55%;
-  background: #1C1C1E;
-  position: relative;
-  overflow: hidden;
+  height: 55%; background: #0A0A0A; position: relative; overflow: hidden;
+  border-top: 1px solid #2a2a2a;
 }
-.tpl-2 .photo-area .photo-placeholder {
-  position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #333;
-  font-size: 24px;
-  text-align: center;
-  line-height: 1.8;
-}
-.tpl-2 .photo-area .photo-img {
-  position: absolute;
-  display: none;
+.tpl-2 .photo-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  color: #333; font-size: 20px; text-align: center; line-height: 1.8;
 }
 
-/* 模板3：全图叠加 */
-.tpl-3 { background: #1C1C1E; position: relative; }
+/* ============ 模板：全屏照片留白 ============ */
+.tpl-3 {
+  background: #1C1C1E; position: relative;
+  padding: 60px;
+}
+.tpl-3 .inner-frame {
+  position: absolute; top: 60px; left: 60px;
+  width: 960px; height: 1320px; border-radius: 16px;
+  overflow: hidden; background: #0A0A0A;
+  border: 1px solid #2a2a2a;
+}
 .tpl-3 .photo-area {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  overflow: hidden;
 }
-.tpl-3 .photo-area .photo-placeholder {
-  color: #333;
-  font-size: 24px;
-  letter-spacing: 2px;
-}
-.tpl-3 .photo-area .photo-img {
-  position: absolute;
-  display: none;
+.tpl-3 .photo-placeholder {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  display: flex; justify-content: center; align-items: center;
+  color: #333; font-size: 20px; letter-spacing: 2px;
 }
 .tpl-3 .overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 55%;
-  background: linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 40%, rgba(10,10,10,0.7) 80%, rgba(10,10,10,0) 100%);
-  z-index: 5;
-  pointer-events: none;
+  position: absolute; top: 0; left: 0; width: 100%; height: 50%;
+  background: linear-gradient(to bottom,
+    rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 40%,
+    rgba(10,10,10,0.7) 80%, rgba(10,10,10,0) 100%);
+  z-index: 5; pointer-events: none;
 }
 .tpl-3 .text-area {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 50%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 60px;
-  z-index: 6;
+  position: absolute; top: 0; left: 0; width: 100%;
+  height: 45%; display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  padding: 40px; z-index: 6;
 }
 .tpl-3 .main-title {
-  font-size: 64px;
-  font-weight: bold;
-  color: #FFD600;
-  text-align: center;
-  line-height: 1.2;
-  margin-bottom: 25px;
+  font-size: 56px; font-weight: bold; color: #FFD600;
+  text-align: center; line-height: 1.2; margin-bottom: 20px;
   white-space: pre-line;
 }
 .tpl-3 .sub-title {
-  font-size: 32px;
-  color: #F5F5F5;
-  text-align: center;
-  line-height: 1.5;
-  margin-bottom: 30px;
+  font-size: 28px; color: #F5F5F5;
+  text-align: center; line-height: 1.5; margin-bottom: 20px;
   white-space: pre-line;
 }
 .tpl-3 .divider {
-  width: 70%;
-  height: 3px;
-  background: #FFD600;
+  width: 60%; height: 3px; background: #FFD600;
+}
+
+/* 通用照片图片样式 */
+.photo-img {
+  position: absolute; cursor: grab; user-select: none;
+  -webkit-user-drag: none; -webkit-user-select: none;
+}
+.photo-img:active { cursor: grabbing; }
+
+.photo-frame {
+  position: absolute; overflow: hidden; border: 1px solid #2a2a2a;
 }
 
 /* 隐藏类 */
 .hidden { display: none !important; }
 
-/* 加载提示 */
 .loading {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8); display: flex;
+  justify-content: center; align-items: center; z-index: 1000;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
 }
 .loading.show { opacity: 1; pointer-events: all; }
-.loading-text {
-  color: #FFD600;
-  font-size: 18px;
-  font-weight: bold;
-}
+.loading-text { color: #FFD600; font-size: 18px; font-weight: bold; }
 
-/* 响应式 */
 @media (max-width: 1200px) {
   .main { flex-direction: column; }
-  .panel { width: 100%; border-right: none; border-bottom: 1px solid #222; }
+  .panel { width: 100%; border-right: none; border-bottom: 1px solid #2a2a2a; }
   .cover-render { transform: scale(0.5); transform-origin: center top; }
 }
 </style>
@@ -453,40 +288,39 @@ body {
 
 <div class="header">
   <h1>GAAAP 小红书封面生成器</h1>
-  <span class="brand">品牌色：黑黄硬核工业风 | 尺寸：1080×1440</span>
+  <span class="brand">灰色主题 · 多图拼图 · 拖拽平移</span>
 </div>
 
 <div class="main">
-  <!-- 左侧编辑面板 -->
   <div class="panel">
     <h3>选择模板</h3>
     <div class="template-selector">
-      <button class="template-btn active" data-template="1">上下分割</button>
-      <button class="template-btn" data-template="2">左右分割</button>
-      <button class="template-btn" data-template="3">全图叠加</button>
+      <button class="template-btn active" data-template="1">居中留白</button>
+      <button class="template-btn" data-template="2">左右卡片</button>
+      <button class="template-btn" data-template="3">全屏留白</button>
     </div>
 
     <h3>文字内容</h3>
     <div class="input-group">
       <label>主标题（黄色大字）</label>
-      <input type="text" id="mainTitle" value="44岁硬拉100kg" placeholder="输入主标题">
+      <textarea id="mainTitle" rows="2">44岁硬拉100kg</textarea>
     </div>
     <div class="input-group">
       <label>副标题（白色小字）</label>
-      <input type="text" id="subTitle" value="给20岁的自己一个交代" placeholder="输入副标题">
+      <textarea id="subTitle" rows="2">给20岁的自己一个交代</textarea>
     </div>
 
     <h3>字体选择</h3>
     <div class="input-group">
       <label>标题字体</label>
       <select id="titleFont">
-        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">系统默认（苹方/微软雅黑）</option>
-        <option value="'Impact', 'Arial Black', sans-serif">Impact（美式粗体，推荐英文）</option>
+        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">苹方 / 微软雅黑</option>
+        <option value="'Impact', 'Arial Black', sans-serif">Impact（美式粗体）</option>
         <option value="'Arial Black', 'Arial', sans-serif">Arial Black</option>
         <option value="'SimHei', 'Microsoft YaHei', sans-serif">黑体</option>
         <option value="'SimSun', 'STSong', serif">宋体</option>
         <option value="'KaiTi', 'STKaiti', serif">楷体</option>
-        <option value="'Times New Roman', serif">Times New Roman（英文衬线）</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
         <option value="monospace">等宽字体</option>
       </select>
       <div class="font-preview" id="titleFontPreview" style="font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;">GAAAP 字体预览</div>
@@ -494,7 +328,7 @@ body {
     <div class="input-group">
       <label>副标题字体</label>
       <select id="subFont">
-        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">系统默认（苹方/微软雅黑）</option>
+        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">苹方 / 微软雅黑</option>
         <option value="'Impact', 'Arial Black', sans-serif">Impact（美式粗体）</option>
         <option value="'Arial', sans-serif">Arial</option>
         <option value="'SimHei', 'Microsoft YaHei', sans-serif">黑体</option>
@@ -510,9 +344,11 @@ body {
     <div class="upload-area" id="uploadArea">
       <div class="icon">📷</div>
       <div class="text">点击或拖拽上传照片</div>
-      <div class="hint">支持 JPG / PNG，建议 1080×1440 以上</div>
-      <input type="file" id="photoInput" accept="image/*">
+      <div class="hint">支持单张（平铺）或多张（拼图）</div>
+      <input type="file" id="photoInput" accept="image/*" multiple>
     </div>
+
+    <div class="drag-hint" id="dragHint">💡 提示：在右边预览区，拖拽图片可以调整位置</div>
 
     <div class="photo-controls" id="photoControls">
       <div class="control-row">
@@ -520,19 +356,9 @@ body {
         <input type="range" id="photoScale" min="50" max="200" value="100">
         <span class="value" id="scaleValue">100%</span>
       </div>
-      <div class="control-row">
-        <label>X偏移</label>
-        <input type="range" id="photoX" min="-50" max="50" value="0">
-        <span class="value" id="xValue">0</span>
-      </div>
-      <div class="control-row">
-        <label>Y偏移</label>
-        <input type="range" id="photoY" min="-50" max="50" value="0">
-        <span class="value" id="yValue">0</span>
-      </div>
       <div class="btn-row">
-        <button id="resetPhoto">重置</button>
-        <button id="removePhoto">删除照片</button>
+        <button id="resetPhoto">重置位置</button>
+        <button id="removePhoto">清空照片</button>
       </div>
     </div>
 
@@ -540,47 +366,43 @@ body {
     <button class="export-btn" id="exportBtn">导出小红书封面（1080×1440）</button>
   </div>
 
-  <!-- 右侧预览 -->
   <div class="preview-area" id="previewArea">
     <div class="scale-wrapper" id="scaleWrapper">
-      <!-- 模板1：上下分割 -->
+      <!-- 模板1：居中留白卡片 -->
       <div class="cover-render tpl-1" id="tpl1">
-        <div class="text-area">
-          <div class="main-title" id="t1-main">44岁硬拉100kg</div>
-          <div class="sub-title" id="t1-sub">给20岁的自己一个交代</div>
-          <div class="divider"></div>
-        </div>
-        <div class="photo-area" id="t1-photo-area">
-          <div class="photo-placeholder">[ 训练实拍照片区域 ]</div>
-          <img class="photo-img" id="t1-img" alt="">
+        <div class="card">
+          <div class="text-area">
+            <div class="main-title" id="t1-main">44岁硬拉100kg</div>
+            <div class="sub-title" id="t1-sub">给20岁的自己一个交代</div>
+            <div class="divider"></div>
+          </div>
+          <div class="photo-area" id="t1-photo-area"></div>
         </div>
         <div class="watermark">GAAAP</div>
       </div>
 
-      <!-- 模板2：左右分割 -->
+      <!-- 模板2：左右卡片留白 -->
       <div class="cover-render tpl-2 hidden" id="tpl2">
-        <div class="text-area">
-          <div class="main-title" id="t2-main">年龄是<br>数字<br>力量是<br>选择</div>
-          <div class="sub-title" id="t2-sub">GAAAP</div>
-        </div>
-        <div class="photo-area" id="t2-photo-area">
-          <div class="photo-placeholder">[ 训练实拍<br>照片区域 ]</div>
-          <img class="photo-img" id="t2-img" alt="">
+        <div class="card">
+          <div class="text-area">
+            <div class="main-title" id="t2-main">年龄是<br>数字<br>力量是<br>选择</div>
+            <div class="sub-title" id="t2-sub">GAAAP</div>
+          </div>
+          <div class="photo-area" id="t2-photo-area"></div>
         </div>
         <div class="watermark">GAAAP</div>
       </div>
 
-      <!-- 模板3：全图叠加 -->
+      <!-- 模板3：全屏照片留白 -->
       <div class="cover-render tpl-3 hidden" id="tpl3">
-        <div class="photo-area" id="t3-photo-area">
-          <div class="photo-placeholder">[ 训练实拍照片全屏背景 ]</div>
-          <img class="photo-img" id="t3-img" alt="">
-        </div>
-        <div class="overlay"></div>
-        <div class="text-area">
-          <div class="main-title" id="t3-main">3个月，体脂28%→18%</div>
-          <div class="sub-title" id="t3-sub">44岁，身体在重启</div>
-          <div class="divider"></div>
+        <div class="inner-frame">
+          <div class="photo-area" id="t3-photo-area"></div>
+          <div class="overlay"></div>
+          <div class="text-area">
+            <div class="main-title" id="t3-main">3个月，体脂28%→18%</div>
+            <div class="sub-title" id="t3-sub">44岁，身体在重启</div>
+            <div class="divider"></div>
+          </div>
         </div>
         <div class="watermark">GAAAP</div>
       </div>
@@ -588,26 +410,28 @@ body {
   </div>
 </div>
 
-<!-- 加载提示 -->
 <div class="loading" id="loading">
   <div class="loading-text">正在生成图片...</div>
 </div>
 
 <script>
-// 状态
+// ==================== 状态 ====================
 let currentTemplate = 1;
-let currentPhoto = null;
-let photoTransform = { scale: 100, x: 0, y: 0 };
-let photoNaturalSize = { w: 0, h: 0 };
+let photos = []; // { src, naturalW, naturalH, displayW, displayH, left, top, scale, frameEl, imgEl }
+let photoScale = 100;
+let isDragging = false;
+let dragPhoto = null;
+let dragStartX = 0, dragStartY = 0;
+let dragPhotoStartLeft = 0, dragPhotoStartTop = 0;
 
-// 容器尺寸定义（固定像素值）
-const CONTAINER_SIZES = {
-  1: { w: 1080, h: 648 },   // 模板1 photo-area: 1080 x (1440 * 0.45)
-  2: { w: 594, h: 1440 },   // 模板2 photo-area: (1080 * 0.55) x 1440
-  3: { w: 1080, h: 1440 }   // 模板3 photo-area: 1080 x 1440
+// 容器尺寸（px）
+const PHOTO_AREA_SIZES = {
+  1: { w: 1080, h: 480 },
+  2: { w: 480, h: 1280 },
+  3: { w: 960, h: 1320 }
 };
 
-// 模板切换
+// ==================== 模板切换 ====================
 const templateBtns = document.querySelectorAll('.template-btn');
 const templates = [null, document.getElementById('tpl1'), document.getElementById('tpl2'), document.getElementById('tpl3')];
 
@@ -624,27 +448,24 @@ templateBtns.forEach(btn => {
     });
     updateText();
     applyFontStyles();
-    applyPhotoTransform();
+    rebuildPhotoLayout();
   });
 });
 
-// 文字输入同步
+// ==================== 文字输入 ====================
 const mainTitleInput = document.getElementById('mainTitle');
 const subTitleInput = document.getElementById('subTitle');
 
 function updateText() {
   const main = mainTitleInput.value;
   const sub = subTitleInput.value;
-  
-  // 模板1
+
   document.getElementById('t1-main').textContent = main;
   document.getElementById('t1-sub').textContent = sub;
-  
-  // 模板2（支持换行）
+
   document.getElementById('t2-main').innerHTML = main.replace(/\n/g, '<br>') || '年龄是<br>数字<br>力量是<br>选择';
   document.getElementById('t2-sub').textContent = sub || 'GAAAP';
-  
-  // 模板3
+
   document.getElementById('t3-main').textContent = main;
   document.getElementById('t3-sub').textContent = sub;
 }
@@ -652,7 +473,7 @@ function updateText() {
 mainTitleInput.addEventListener('input', updateText);
 subTitleInput.addEventListener('input', updateText);
 
-// 字体选择
+// ==================== 字体选择 ====================
 const titleFontSelect = document.getElementById('titleFont');
 const subFontSelect = document.getElementById('subFont');
 const titleFontPreview = document.getElementById('titleFontPreview');
@@ -661,16 +482,10 @@ const subFontPreview = document.getElementById('subFontPreview');
 function applyFontStyles() {
   const titleFont = titleFontSelect.value;
   const subFont = subFontSelect.value;
-  
-  // 应用到所有模板的标题和副标题
-  document.querySelectorAll('.main-title').forEach(el => {
-    el.style.fontFamily = titleFont;
-  });
-  document.querySelectorAll('.sub-title').forEach(el => {
-    el.style.fontFamily = subFont;
-  });
-  
-  // 更新预览
+
+  document.querySelectorAll('.main-title').forEach(el => el.style.fontFamily = titleFont);
+  document.querySelectorAll('.sub-title').forEach(el => el.style.fontFamily = subFont);
+
   titleFontPreview.style.fontFamily = titleFont;
   subFontPreview.style.fontFamily = subFont;
 }
@@ -678,242 +493,303 @@ function applyFontStyles() {
 titleFontSelect.addEventListener('change', applyFontStyles);
 subFontSelect.addEventListener('change', applyFontStyles);
 
-// 照片上传
+// ==================== 照片上传 ====================
 const uploadArea = document.getElementById('uploadArea');
 const photoInput = document.getElementById('photoInput');
 const photoControls = document.getElementById('photoControls');
+const dragHint = document.getElementById('dragHint');
 
 uploadArea.addEventListener('click', () => photoInput.click());
 
-uploadArea.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  uploadArea.classList.add('dragover');
-});
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
 uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
 uploadArea.addEventListener('drop', (e) => {
-  e.preventDefault();
-  uploadArea.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) {
-    loadPhoto(file);
-  }
+  e.preventDefault(); uploadArea.classList.remove('dragover');
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  if (files.length) loadPhotos(files);
 });
 
 photoInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (file) loadPhoto(file);
+  if (e.target.files.length) loadPhotos(Array.from(e.target.files));
 });
 
-function loadPhoto(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    currentPhoto = e.target.result;
-    photoControls.classList.add('show');
-    
-    // 先创建 Image 获取原始尺寸
-    const tempImg = new Image();
-    tempImg.onload = () => {
-      photoNaturalSize = { w: tempImg.naturalWidth, h: tempImg.naturalHeight };
-      
-      // 设置所有模板的图片
-      ['t1-img', 't2-img', 't3-img'].forEach(id => {
-        const img = document.getElementById(id);
-        img.src = currentPhoto;
-        img.style.display = 'block';
-      });
-      
-      // 隐藏占位文字
-      document.querySelectorAll('.photo-placeholder').forEach(p => p.style.display = 'none');
-      
-      // 重置变换
-      photoTransform = { scale: 100, x: 0, y: 0 };
-      document.getElementById('photoScale').value = 100;
-      document.getElementById('photoX').value = 0;
-      document.getElementById('photoY').value = 0;
-      document.getElementById('scaleValue').textContent = '100%';
-      document.getElementById('xValue').textContent = '0';
-      document.getElementById('yValue').textContent = '0';
-      applyPhotoTransform();
+function loadPhotos(files) {
+  photos = [];
+  let loaded = 0;
+
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        photos.push({
+          src: e.target.result,
+          naturalW: img.naturalWidth,
+          naturalH: img.naturalHeight,
+          left: 0, top: 0, scale: 100
+        });
+        loaded++;
+        if (loaded === files.length) {
+          photoControls.classList.add('show');
+          dragHint.classList.add('show');
+          rebuildPhotoLayout();
+        }
+      };
+      img.src = e.target.result;
     };
-    tempImg.src = currentPhoto;
-  };
-  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
+  });
 }
 
-// 照片变换控制
-const scaleInput = document.getElementById('photoScale');
-const xInput = document.getElementById('photoX');
-const yInput = document.getElementById('photoY');
+// ==================== 重建照片布局 ====================
+function rebuildPhotoLayout() {
+  const area = document.getElementById(`t${currentTemplate}-photo-area`);
+  if (!area) return;
 
-scaleInput.addEventListener('input', (e) => {
-  photoTransform.scale = parseInt(e.target.value);
-  document.getElementById('scaleValue').textContent = photoTransform.scale + '%';
-  applyPhotoTransform();
-});
+  area.innerHTML = '';
 
-xInput.addEventListener('input', (e) => {
-  photoTransform.x = parseInt(e.target.value);
-  document.getElementById('xValue').textContent = photoTransform.x;
-  applyPhotoTransform();
-});
-
-yInput.addEventListener('input', (e) => {
-  photoTransform.y = parseInt(e.target.value);
-  document.getElementById('yValue').textContent = photoTransform.y;
-  applyPhotoTransform();
-});
-
-function applyPhotoTransform() {
-  if (!currentPhoto || !photoNaturalSize.w || !photoNaturalSize.h) return;
-  
-  // 获取当前模板的容器尺寸
-  const size = CONTAINER_SIZES[currentTemplate];
-  const cw = size.w;
-  const ch = size.h;
-  
-  const nw = photoNaturalSize.w;
-  const nh = photoNaturalSize.h;
-  const imgAspect = nw / nh;
-  const containerAspect = cw / ch;
-  
-  // 计算 "cover" 模式的渲染尺寸（保持原始比例，覆盖整个容器）
-  let renderW, renderH;
-  if (imgAspect > containerAspect) {
-    // 图片更宽：高度填满容器，宽度按比例
-    renderH = ch;
-    renderW = ch * imgAspect;
-  } else {
-    // 图片更高或等比例：宽度填满容器，高度按比例
-    renderW = cw;
-    renderH = cw / imgAspect;
+  if (photos.length === 0) {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'photo-placeholder';
+    placeholder.textContent = '[ 拖拽照片区域 ]';
+    area.appendChild(placeholder);
+    return;
   }
-  
-  // 应用缩放
-  const scale = photoTransform.scale / 100;
-  renderW *= scale;
-  renderH *= scale;
-  
-  // 计算偏移（x和y是相对于容器宽高的百分比，范围-50到50）
-  const offsetX = (photoTransform.x / 100) * cw;
-  const offsetY = (photoTransform.y / 100) * ch;
-  
-  // 计算left/top（居中 + 偏移）
-  const left = (cw - renderW) / 2 + offsetX;
-  const top = (ch - renderH) / 2 + offsetY;
-  
-  // 应用到当前模板的图片
-  const currentImg = document.getElementById(`t${currentTemplate}-img`);
-  if (currentImg) {
-    currentImg.style.width = renderW + 'px';
-    currentImg.style.height = renderH + 'px';
-    currentImg.style.left = left + 'px';
-    currentImg.style.top = top + 'px';
-    // 不使用 transform 和 object-fit，避免 html2canvas 比例失真
-  }
-  
-  // 同时同步到其他模板的图片（非当前模板使用默认居中，无缩放）
-  [1, 2, 3].forEach(t => {
-    if (t === currentTemplate) return;
-    const img = document.getElementById(`t${t}-img`);
-    if (!img || !img.src) return;
-    const s = CONTAINER_SIZES[t];
-    const ca = s.w / s.h;
-    let rw, rh;
-    if (imgAspect > ca) {
-      rh = s.h;
-      rw = s.h * imgAspect;
+
+  // 获取容器尺寸
+  let cw, ch;
+  if (currentTemplate === 1) { cw = 1080; ch = 480; }
+  else if (currentTemplate === 2) { cw = 480; ch = 1280; }
+  else { cw = 960; ch = 1320; }
+
+  const count = photos.length;
+  // 最多处理4张
+  const activeCount = Math.min(count, 4);
+
+  for (let i = 0; i < activeCount; i++) {
+    const p = photos[i];
+    const frame = document.createElement('div');
+    frame.className = 'photo-frame';
+
+    // 计算每张图片的 frame 位置和尺寸
+    let fx, fy, fw, fh;
+    if (activeCount === 1) {
+      fx = 0; fy = 0; fw = cw; fh = ch;
+    } else if (activeCount === 2) {
+      // 左右或上下各50%
+      if (currentTemplate === 2) {
+        // 模板2竖向，上下排列
+        fx = 0; fy = (i * ch) / 2; fw = cw; fh = ch / 2;
+      } else {
+        // 其他模板横向，左右排列
+        fx = (i * cw) / 2; fy = 0; fw = cw / 2; fh = ch;
+      }
+    } else if (activeCount === 3) {
+      // 模板2竖向：左边50% + 右边上下25/25
+      if (currentTemplate === 2) {
+        if (i === 0) { fx = 0; fy = 0; fw = cw; fh = ch / 2; }
+        else { fx = 0; fy = ch / 2 + (i - 1) * ch / 4; fw = cw / 2; fh = ch / 4; }
+      } else {
+        // 其他模板：上方50% + 下方左右25/25
+        if (i === 0) { fx = 0; fy = 0; fw = cw; fh = ch / 2; }
+        else { fx = (i - 1) * cw / 2; fy = ch / 2; fw = cw / 2; fh = ch / 2; }
+      }
     } else {
-      rw = s.w;
-      rh = s.w / imgAspect;
+      // 4张：2x2 网格
+      const col = i % 2;
+      const row = Math.floor(i / 2);
+      fx = col * cw / 2; fy = row * ch / 2;
+      fw = cw / 2; fh = ch / 2;
     }
-    img.style.width = rw + 'px';
-    img.style.height = rh + 'px';
-    img.style.left = (s.w - rw) / 2 + 'px';
-    img.style.top = (s.h - rh) / 2 + 'px';
-  });
+
+    frame.style.left = fx + 'px';
+    frame.style.top = fy + 'px';
+    frame.style.width = fw + 'px';
+    frame.style.height = fh + 'px';
+    area.appendChild(frame);
+
+    // 创建图片
+    const img = document.createElement('img');
+    img.className = 'photo-img';
+    img.src = p.src;
+    img.draggable = false;
+    frame.appendChild(img);
+
+    // 计算 cover 尺寸
+    const imgAspect = p.naturalW / p.naturalH;
+    const frameAspect = fw / fh;
+    let renderW, renderH;
+    if (imgAspect > frameAspect) {
+      renderH = fh; renderW = fh * imgAspect;
+    } else {
+      renderW = fw; renderH = fw / imgAspect;
+    }
+
+    // 应用缩放
+    const s = photoScale / 100;
+    renderW *= s; renderH *= s;
+
+    // 居中 + 用户偏移
+    let left = (fw - renderW) / 2 + p.left;
+    let top = (fh - renderH) / 2 + p.top;
+
+    img.style.width = renderW + 'px';
+    img.style.height = renderH + 'px';
+    img.style.left = left + 'px';
+    img.style.top = top + 'px';
+
+    // 绑定拖拽事件
+    img.addEventListener('mousedown', (e) => startDrag(e, p, img, fw, fh, renderW, renderH));
+    img.addEventListener('touchstart', (e) => startDrag(e, p, img, fw, fh, renderW, renderH), {passive: false});
+
+    // 保存引用
+    p.frameEl = frame;
+    p.imgEl = img;
+  }
 }
 
-// 重置照片
+// ==================== 拖拽平移 ====================
+function startDrag(e, photo, img, frameW, frameH, renderW, renderH) {
+  e.preventDefault();
+  isDragging = true;
+  dragPhoto = photo;
+
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  dragStartX = clientX;
+  dragStartY = clientY;
+
+  // 获取当前 left/top（从样式解析）
+  const rect = img.getBoundingClientRect();
+  const parentRect = img.parentElement.getBoundingClientRect();
+  dragPhotoStartLeft = rect.left - parentRect.left;
+  dragPhotoStartTop = rect.top - parentRect.top;
+
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', endDrag);
+  document.addEventListener('touchmove', onDrag, {passive: false});
+  document.addEventListener('touchend', endDrag);
+}
+
+function onDrag(e) {
+  if (!isDragging || !dragPhoto) return;
+  e.preventDefault();
+
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+  const dx = clientX - dragStartX;
+  const dy = clientY - dragStartY;
+
+  const frameW = dragPhoto.frameEl.offsetWidth;
+  const frameH = dragPhoto.frameEl.offsetHeight;
+  const imgW = dragPhoto.imgEl.offsetWidth;
+  const imgH = dragPhoto.imgEl.offsetHeight;
+
+  // 计算新的 left/top，限制在容器内
+  let newLeft = dragPhotoStartLeft + dx;
+  let newTop = dragPhotoStartTop + dy;
+
+  // 边界限制：图片不能完全拖出容器
+  newLeft = Math.min(0, Math.max(newLeft, frameW - imgW));
+  newTop = Math.min(0, Math.max(newTop, frameH - imgH));
+
+  dragPhoto.imgEl.style.left = newLeft + 'px';
+  dragPhoto.imgEl.style.top = newTop + 'px';
+}
+
+function endDrag(e) {
+  if (!isDragging || !dragPhoto) return;
+
+  // 保存最终位置到 photo 对象
+  const img = dragPhoto.imgEl;
+  const parent = img.parentElement;
+  const imgRect = img.getBoundingClientRect();
+  const parentRect = parent.getBoundingClientRect();
+  dragPhoto.left = imgRect.left - parentRect.left - (parent.offsetWidth - img.offsetWidth) / 2;
+  dragPhoto.top = imgRect.top - parentRect.top - (parent.offsetHeight - img.offsetHeight) / 2;
+
+  isDragging = false;
+  dragPhoto = null;
+
+  document.removeEventListener('mousemove', onDrag);
+  document.removeEventListener('mouseup', endDrag);
+  document.removeEventListener('touchmove', onDrag);
+  document.removeEventListener('touchend', endDrag);
+}
+
+// ==================== 缩放控制 ====================
+const scaleInput = document.getElementById('photoScale');
+scaleInput.addEventListener('input', (e) => {
+  photoScale = parseInt(e.target.value);
+  document.getElementById('scaleValue').textContent = photoScale + '%';
+  rebuildPhotoLayout();
+});
+
+// ==================== 重置 / 清空 ====================
 document.getElementById('resetPhoto').addEventListener('click', () => {
-  photoTransform = { scale: 100, x: 0, y: 0 };
+  photoScale = 100;
   scaleInput.value = 100;
-  xInput.value = 0;
-  yInput.value = 0;
   document.getElementById('scaleValue').textContent = '100%';
-  document.getElementById('xValue').textContent = '0';
-  document.getElementById('yValue').textContent = '0';
-  applyPhotoTransform();
+  photos.forEach(p => { p.left = 0; p.top = 0; });
+  rebuildPhotoLayout();
 });
 
-// 删除照片
 document.getElementById('removePhoto').addEventListener('click', () => {
-  currentPhoto = null;
-  photoNaturalSize = { w: 0, h: 0 };
+  photos = [];
+  photoScale = 100;
+  scaleInput.value = 100;
+  document.getElementById('scaleValue').textContent = '100%';
   photoControls.classList.remove('show');
+  dragHint.classList.remove('show');
   photoInput.value = '';
-  
-  ['t1-img', 't2-img', 't3-img'].forEach(id => {
-    const img = document.getElementById(id);
-    img.src = '';
-    img.style.display = 'none';
-    img.style.width = '';
-    img.style.height = '';
-    img.style.left = '';
-    img.style.top = '';
-  });
-  
-  document.querySelectorAll('.photo-placeholder').forEach(p => p.style.display = '');
+  rebuildPhotoLayout();
 });
 
-// 导出功能
+// ==================== 导出 ====================
 document.getElementById('exportBtn').addEventListener('click', async () => {
   const currentTpl = document.getElementById(`tpl${currentTemplate}`);
   if (!currentTpl) return;
-  
+
   const loading = document.getElementById('loading');
   loading.classList.add('show');
-  
+
   try {
     const canvas = await html2canvas(currentTpl, {
-      width: 1080,
-      height: 1440,
-      scale: 1,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: null,
-      logging: false
+      width: 1080, height: 1440, scale: 1,
+      useCORS: true, allowTaint: true,
+      backgroundColor: null, logging: false
     });
-    
+
     const link = document.createElement('a');
     link.download = `GAAAP-小红书封面-${Date.now()}.png`;
     link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
   } catch (err) {
-    alert('导出失败，请重试：' + err.message);
+    alert('导出失败：' + err.message);
   } finally {
     loading.classList.remove('show');
   }
 });
 
-// 自动缩放预览以适应屏幕
+// ==================== 预览缩放 ====================
 function autoScalePreview() {
   const previewArea = document.getElementById('previewArea');
   const wrapper = document.getElementById('scaleWrapper');
-  const availableWidth = previewArea.clientWidth - 80;
-  const availableHeight = previewArea.clientHeight - 80;
-  const scaleX = availableWidth / 1080;
-  const scaleY = availableHeight / 1440;
-  const scale = Math.min(scaleX, scaleY, 1);
+  const aw = previewArea.clientWidth - 80;
+  const ah = previewArea.clientHeight - 80;
+  const scale = Math.min(aw / 1080, ah / 1440, 1);
   wrapper.style.transform = `scale(${scale})`;
 }
 
 window.addEventListener('resize', autoScalePreview);
 window.addEventListener('load', autoScalePreview);
 
-// 初始化
+// ==================== 初始化 ====================
 updateText();
 applyFontStyles();
 autoScalePreview();
+rebuildPhotoLayout();
 </script>
 
 </body>
