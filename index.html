@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAAAP 小红书封面生成器</title>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  background: #0A0A0A;
+  color: #F5F5F5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部导航 */
+.header {
+  background: #0A0A0A;
+  border-bottom: 2px solid #FFD600;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.header h1 {
+  font-size: 22px;
+  color: #FFD600;
+  letter-spacing: 2px;
+}
+.header .brand {
+  font-size: 14px;
+  color: #888;
+}
+
+/* 主布局 */
+.main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 左侧编辑面板 */
+.panel {
+  width: 360px;
+  background: #141414;
+  border-right: 1px solid #222;
+  padding: 20px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+.panel h3 {
+  font-size: 14px;
+  color: #FFD600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* 模板选择 */
+.template-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.template-btn {
+  flex: 1;
+  padding: 10px;
+  background: #1C1C1E;
+  border: 2px solid #333;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-align: center;
+}
+.template-btn:hover { border-color: #FFD600; color: #FFD600; }
+.template-btn.active { border-color: #FFD600; color: #FFD600; background: #2a2500; }
+
+/* 输入组 */
+.input-group {
+  margin-bottom: 16px;
+}
+.input-group label {
+  display: block;
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 6px;
+}
+.input-group input[type="text"],
+.input-group textarea,
+.input-group select {
+  width: 100%;
+  padding: 10px 12px;
+  background: #1C1C1E;
+  border: 1px solid #333;
+  color: #F5F5F5;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input-group input:focus,
+.input-group textarea:focus,
+.input-group select:focus { border-color: #FFD600; }
+.input-group textarea { resize: vertical; min-height: 60px; }
+.input-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 30px;
+}
+.input-group select option {
+  background: #1C1C1E;
+  color: #F5F5F5;
+}
+
+/* 字体预览 */
+.font-preview {
+  font-size: 18px;
+  color: #FFD600;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #1C1C1E;
+  border-radius: 4px;
+  border: 1px solid #333;
+}
+
+/* 照片上传 */
+.upload-area {
+  border: 2px dashed #333;
+  border-radius: 6px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: 20px;
+}
+.upload-area:hover { border-color: #FFD600; }
+.upload-area.dragover { border-color: #FFD600; background: #2a2500; }
+.upload-area .icon { font-size: 32px; color: #FFD600; margin-bottom: 8px; }
+.upload-area .text { font-size: 13px; color: #888; }
+.upload-area .hint { font-size: 11px; color: #555; margin-top: 6px; }
+.upload-area input[type="file"] { display: none; }
+
+/* 照片控制 */
+.photo-controls {
+  display: none;
+  background: #1C1C1E;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+.photo-controls.show { display: block; }
+.photo-controls .control-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.photo-controls .control-row:last-child { margin-bottom: 0; }
+.photo-controls label {
+  font-size: 12px;
+  color: #888;
+  width: 60px;
+  flex-shrink: 0;
+}
+.photo-controls input[type="range"] {
+  flex: 1;
+  accent-color: #FFD600;
+}
+.photo-controls .value {
+  font-size: 12px;
+  color: #FFD600;
+  width: 50px;
+  text-align: right;
+}
+.photo-controls .btn-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.photo-controls .btn-row button {
+  flex: 1;
+  padding: 6px 10px;
+  background: #333;
+  border: none;
+  color: #F5F5F5;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.photo-controls .btn-row button:hover { background: #FFD600; color: #0A0A0A; }
+
+/* 导出按钮 */
+.export-btn {
+  width: 100%;
+  padding: 14px;
+  background: #FFD600;
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+.export-btn:hover { background: #e6c200; }
+.export-btn:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+/* 右侧预览 */
+.preview-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #0A0A0A;
+  overflow: auto;
+}
+
+/* 封面渲染区域（精确1080x1440） */
+.cover-render {
+  width: 1080px;
+  height: 1440px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.8);
+  flex-shrink: 0;
+}
+
+/* 缩放容器 */
+.scale-wrapper {
+  transform-origin: center center;
+}
+
+/* 通用元素 */
+.watermark {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+  font-size: 28px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 2px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 模板1：上下分割 */
+.tpl-1 { background: #0A0A0A; display: flex; flex-direction: column; }
+.tpl-1 .text-area {
+  height: 55%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+.tpl-1 .main-title {
+  font-size: 72px;
+  font-weight: bold;
+  color: #FFD600;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 30px;
+  white-space: pre-line;
+}
+.tpl-1 .sub-title {
+  font-size: 32px;
+  color: #F5F5F5;
+  text-align: center;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+.tpl-1 .divider {
+  width: 80%;
+  height: 4px;
+  background: #FFD600;
+  margin: 40px auto;
+}
+.tpl-1 .photo-area {
+  height: 45%;
+  background: #1C1C1E;
+  position: relative;
+  overflow: hidden;
+}
+.tpl-1 .photo-area .photo-placeholder {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+.tpl-1 .photo-area .photo-img {
+  position: absolute;
+  display: none;
+  /* width/height 由 JS 精确计算，不使用 object-fit 和 transform */
+}
+
+/* 模板2：左右分割 */
+.tpl-2 { background: #0A0A0A; display: flex; flex-direction: row; }
+.tpl-2 .text-area {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+.tpl-2 .main-title {
+  font-size: 68px;
+  font-weight: bold;
+  color: #FFD600;
+  text-align: center;
+  line-height: 1.3;
+  white-space: pre-line;
+}
+.tpl-2 .sub-title {
+  font-size: 32px;
+  color: #F5F5F5;
+  text-align: center;
+  margin-top: 40px;
+  white-space: pre-line;
+}
+.tpl-2 .photo-area {
+  width: 55%;
+  background: #1C1C1E;
+  position: relative;
+  overflow: hidden;
+}
+.tpl-2 .photo-area .photo-placeholder {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+  line-height: 1.8;
+}
+.tpl-2 .photo-area .photo-img {
+  position: absolute;
+  display: none;
+}
+
+/* 模板3：全图叠加 */
+.tpl-3 { background: #1C1C1E; position: relative; }
+.tpl-3 .photo-area {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.tpl-3 .photo-area .photo-placeholder {
+  color: #333;
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+.tpl-3 .photo-area .photo-img {
+  position: absolute;
+  display: none;
+}
+.tpl-3 .overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 55%;
+  background: linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 40%, rgba(10,10,10,0.7) 80%, rgba(10,10,10,0) 100%);
+  z-index: 5;
+  pointer-events: none;
+}
+.tpl-3 .text-area {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+  z-index: 6;
+}
+.tpl-3 .main-title {
+  font-size: 64px;
+  font-weight: bold;
+  color: #FFD600;
+  text-align: center;
+  line-height: 1.2;
+  margin-bottom: 25px;
+  white-space: pre-line;
+}
+.tpl-3 .sub-title {
+  font-size: 32px;
+  color: #F5F5F5;
+  text-align: center;
+  line-height: 1.5;
+  margin-bottom: 30px;
+  white-space: pre-line;
+}
+.tpl-3 .divider {
+  width: 70%;
+  height: 3px;
+  background: #FFD600;
+}
+
+/* 隐藏类 */
+.hidden { display: none !important; }
+
+/* 加载提示 */
+.loading {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.loading.show { opacity: 1; pointer-events: all; }
+.loading-text {
+  color: #FFD600;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* 响应式 */
+@media (max-width: 1200px) {
+  .main { flex-direction: column; }
+  .panel { width: 100%; border-right: none; border-bottom: 1px solid #222; }
+  .cover-render { transform: scale(0.5); transform-origin: center top; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>GAAAP 小红书封面生成器</h1>
+  <span class="brand">品牌色：黑黄硬核工业风 | 尺寸：1080×1440</span>
+</div>
+
+<div class="main">
+  <!-- 左侧编辑面板 -->
+  <div class="panel">
+    <h3>选择模板</h3>
+    <div class="template-selector">
+      <button class="template-btn active" data-template="1">上下分割</button>
+      <button class="template-btn" data-template="2">左右分割</button>
+      <button class="template-btn" data-template="3">全图叠加</button>
+    </div>
+
+    <h3>文字内容</h3>
+    <div class="input-group">
+      <label>主标题（黄色大字）</label>
+      <input type="text" id="mainTitle" value="44岁硬拉100kg" placeholder="输入主标题">
+    </div>
+    <div class="input-group">
+      <label>副标题（白色小字）</label>
+      <input type="text" id="subTitle" value="给20岁的自己一个交代" placeholder="输入副标题">
+    </div>
+
+    <h3>字体选择</h3>
+    <div class="input-group">
+      <label>标题字体</label>
+      <select id="titleFont">
+        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">系统默认（苹方/微软雅黑）</option>
+        <option value="'Impact', 'Arial Black', sans-serif">Impact（美式粗体，推荐英文）</option>
+        <option value="'Arial Black', 'Arial', sans-serif">Arial Black</option>
+        <option value="'SimHei', 'Microsoft YaHei', sans-serif">黑体</option>
+        <option value="'SimSun', 'STSong', serif">宋体</option>
+        <option value="'KaiTi', 'STKaiti', serif">楷体</option>
+        <option value="'Times New Roman', serif">Times New Roman（英文衬线）</option>
+        <option value="monospace">等宽字体</option>
+      </select>
+      <div class="font-preview" id="titleFontPreview" style="font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;">GAAAP 字体预览</div>
+    </div>
+    <div class="input-group">
+      <label>副标题字体</label>
+      <select id="subFont">
+        <option value="'PingFang SC', 'Microsoft YaHei', sans-serif">系统默认（苹方/微软雅黑）</option>
+        <option value="'Impact', 'Arial Black', sans-serif">Impact（美式粗体）</option>
+        <option value="'Arial', sans-serif">Arial</option>
+        <option value="'SimHei', 'Microsoft YaHei', sans-serif">黑体</option>
+        <option value="'SimSun', 'STSong', serif">宋体</option>
+        <option value="'KaiTi', 'STKaiti', serif">楷体</option>
+        <option value="'Times New Roman', serif">Times New Roman</option>
+        <option value="monospace">等宽字体</option>
+      </select>
+      <div class="font-preview" id="subFontPreview" style="font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; color: #F5F5F5;">副标题字体预览</div>
+    </div>
+
+    <h3>上传照片</h3>
+    <div class="upload-area" id="uploadArea">
+      <div class="icon">📷</div>
+      <div class="text">点击或拖拽上传照片</div>
+      <div class="hint">支持 JPG / PNG，建议 1080×1440 以上</div>
+      <input type="file" id="photoInput" accept="image/*">
+    </div>
+
+    <div class="photo-controls" id="photoControls">
+      <div class="control-row">
+        <label>缩放</label>
+        <input type="range" id="photoScale" min="50" max="200" value="100">
+        <span class="value" id="scaleValue">100%</span>
+      </div>
+      <div class="control-row">
+        <label>X偏移</label>
+        <input type="range" id="photoX" min="-50" max="50" value="0">
+        <span class="value" id="xValue">0</span>
+      </div>
+      <div class="control-row">
+        <label>Y偏移</label>
+        <input type="range" id="photoY" min="-50" max="50" value="0">
+        <span class="value" id="yValue">0</span>
+      </div>
+      <div class="btn-row">
+        <button id="resetPhoto">重置</button>
+        <button id="removePhoto">删除照片</button>
+      </div>
+    </div>
+
+    <h3>导出</h3>
+    <button class="export-btn" id="exportBtn">导出小红书封面（1080×1440）</button>
+  </div>
+
+  <!-- 右侧预览 -->
+  <div class="preview-area" id="previewArea">
+    <div class="scale-wrapper" id="scaleWrapper">
+      <!-- 模板1：上下分割 -->
+      <div class="cover-render tpl-1" id="tpl1">
+        <div class="text-area">
+          <div class="main-title" id="t1-main">44岁硬拉100kg</div>
+          <div class="sub-title" id="t1-sub">给20岁的自己一个交代</div>
+          <div class="divider"></div>
+        </div>
+        <div class="photo-area" id="t1-photo-area">
+          <div class="photo-placeholder">[ 训练实拍照片区域 ]</div>
+          <img class="photo-img" id="t1-img" alt="">
+        </div>
+        <div class="watermark">GAAAP</div>
+      </div>
+
+      <!-- 模板2：左右分割 -->
+      <div class="cover-render tpl-2 hidden" id="tpl2">
+        <div class="text-area">
+          <div class="main-title" id="t2-main">年龄是<br>数字<br>力量是<br>选择</div>
+          <div class="sub-title" id="t2-sub">GAAAP</div>
+        </div>
+        <div class="photo-area" id="t2-photo-area">
+          <div class="photo-placeholder">[ 训练实拍<br>照片区域 ]</div>
+          <img class="photo-img" id="t2-img" alt="">
+        </div>
+        <div class="watermark">GAAAP</div>
+      </div>
+
+      <!-- 模板3：全图叠加 -->
+      <div class="cover-render tpl-3 hidden" id="tpl3">
+        <div class="photo-area" id="t3-photo-area">
+          <div class="photo-placeholder">[ 训练实拍照片全屏背景 ]</div>
+          <img class="photo-img" id="t3-img" alt="">
+        </div>
+        <div class="overlay"></div>
+        <div class="text-area">
+          <div class="main-title" id="t3-main">3个月，体脂28%→18%</div>
+          <div class="sub-title" id="t3-sub">44岁，身体在重启</div>
+          <div class="divider"></div>
+        </div>
+        <div class="watermark">GAAAP</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 加载提示 -->
+<div class="loading" id="loading">
+  <div class="loading-text">正在生成图片...</div>
+</div>
+
+<script>
+// 状态
+let currentTemplate = 1;
+let currentPhoto = null;
+let photoTransform = { scale: 100, x: 0, y: 0 };
+let photoNaturalSize = { w: 0, h: 0 };
+
+// 容器尺寸定义（固定像素值）
+const CONTAINER_SIZES = {
+  1: { w: 1080, h: 648 },   // 模板1 photo-area: 1080 x (1440 * 0.45)
+  2: { w: 594, h: 1440 },   // 模板2 photo-area: (1080 * 0.55) x 1440
+  3: { w: 1080, h: 1440 }   // 模板3 photo-area: 1080 x 1440
+};
+
+// 模板切换
+const templateBtns = document.querySelectorAll('.template-btn');
+const templates = [null, document.getElementById('tpl1'), document.getElementById('tpl2'), document.getElementById('tpl3')];
+
+templateBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    templateBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTemplate = parseInt(btn.dataset.template);
+    templates.forEach((tpl, i) => {
+      if (tpl) {
+        if (i === currentTemplate) tpl.classList.remove('hidden');
+        else tpl.classList.add('hidden');
+      }
+    });
+    updateText();
+    applyFontStyles();
+    applyPhotoTransform();
+  });
+});
+
+// 文字输入同步
+const mainTitleInput = document.getElementById('mainTitle');
+const subTitleInput = document.getElementById('subTitle');
+
+function updateText() {
+  const main = mainTitleInput.value;
+  const sub = subTitleInput.value;
+  
+  // 模板1
+  document.getElementById('t1-main').textContent = main;
+  document.getElementById('t1-sub').textContent = sub;
+  
+  // 模板2（支持换行）
+  document.getElementById('t2-main').innerHTML = main.replace(/\n/g, '<br>') || '年龄是<br>数字<br>力量是<br>选择';
+  document.getElementById('t2-sub').textContent = sub || 'GAAAP';
+  
+  // 模板3
+  document.getElementById('t3-main').textContent = main;
+  document.getElementById('t3-sub').textContent = sub;
+}
+
+mainTitleInput.addEventListener('input', updateText);
+subTitleInput.addEventListener('input', updateText);
+
+// 字体选择
+const titleFontSelect = document.getElementById('titleFont');
+const subFontSelect = document.getElementById('subFont');
+const titleFontPreview = document.getElementById('titleFontPreview');
+const subFontPreview = document.getElementById('subFontPreview');
+
+function applyFontStyles() {
+  const titleFont = titleFontSelect.value;
+  const subFont = subFontSelect.value;
+  
+  // 应用到所有模板的标题和副标题
+  document.querySelectorAll('.main-title').forEach(el => {
+    el.style.fontFamily = titleFont;
+  });
+  document.querySelectorAll('.sub-title').forEach(el => {
+    el.style.fontFamily = subFont;
+  });
+  
+  // 更新预览
+  titleFontPreview.style.fontFamily = titleFont;
+  subFontPreview.style.fontFamily = subFont;
+}
+
+titleFontSelect.addEventListener('change', applyFontStyles);
+subFontSelect.addEventListener('change', applyFontStyles);
+
+// 照片上传
+const uploadArea = document.getElementById('uploadArea');
+const photoInput = document.getElementById('photoInput');
+const photoControls = document.getElementById('photoControls');
+
+uploadArea.addEventListener('click', () => photoInput.click());
+
+uploadArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadArea.classList.add('dragover');
+});
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    loadPhoto(file);
+  }
+});
+
+photoInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) loadPhoto(file);
+});
+
+function loadPhoto(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentPhoto = e.target.result;
+    photoControls.classList.add('show');
+    
+    // 先创建 Image 获取原始尺寸
+    const tempImg = new Image();
+    tempImg.onload = () => {
+      photoNaturalSize = { w: tempImg.naturalWidth, h: tempImg.naturalHeight };
+      
+      // 设置所有模板的图片
+      ['t1-img', 't2-img', 't3-img'].forEach(id => {
+        const img = document.getElementById(id);
+        img.src = currentPhoto;
+        img.style.display = 'block';
+      });
+      
+      // 隐藏占位文字
+      document.querySelectorAll('.photo-placeholder').forEach(p => p.style.display = 'none');
+      
+      // 重置变换
+      photoTransform = { scale: 100, x: 0, y: 0 };
+      document.getElementById('photoScale').value = 100;
+      document.getElementById('photoX').value = 0;
+      document.getElementById('photoY').value = 0;
+      document.getElementById('scaleValue').textContent = '100%';
+      document.getElementById('xValue').textContent = '0';
+      document.getElementById('yValue').textContent = '0';
+      applyPhotoTransform();
+    };
+    tempImg.src = currentPhoto;
+  };
+  reader.readAsDataURL(file);
+}
+
+// 照片变换控制
+const scaleInput = document.getElementById('photoScale');
+const xInput = document.getElementById('photoX');
+const yInput = document.getElementById('photoY');
+
+scaleInput.addEventListener('input', (e) => {
+  photoTransform.scale = parseInt(e.target.value);
+  document.getElementById('scaleValue').textContent = photoTransform.scale + '%';
+  applyPhotoTransform();
+});
+
+xInput.addEventListener('input', (e) => {
+  photoTransform.x = parseInt(e.target.value);
+  document.getElementById('xValue').textContent = photoTransform.x;
+  applyPhotoTransform();
+});
+
+yInput.addEventListener('input', (e) => {
+  photoTransform.y = parseInt(e.target.value);
+  document.getElementById('yValue').textContent = photoTransform.y;
+  applyPhotoTransform();
+});
+
+function applyPhotoTransform() {
+  if (!currentPhoto || !photoNaturalSize.w || !photoNaturalSize.h) return;
+  
+  // 获取当前模板的容器尺寸
+  const size = CONTAINER_SIZES[currentTemplate];
+  const cw = size.w;
+  const ch = size.h;
+  
+  const nw = photoNaturalSize.w;
+  const nh = photoNaturalSize.h;
+  const imgAspect = nw / nh;
+  const containerAspect = cw / ch;
+  
+  // 计算 "cover" 模式的渲染尺寸（保持原始比例，覆盖整个容器）
+  let renderW, renderH;
+  if (imgAspect > containerAspect) {
+    // 图片更宽：高度填满容器，宽度按比例
+    renderH = ch;
+    renderW = ch * imgAspect;
+  } else {
+    // 图片更高或等比例：宽度填满容器，高度按比例
+    renderW = cw;
+    renderH = cw / imgAspect;
+  }
+  
+  // 应用缩放
+  const scale = photoTransform.scale / 100;
+  renderW *= scale;
+  renderH *= scale;
+  
+  // 计算偏移（x和y是相对于容器宽高的百分比，范围-50到50）
+  const offsetX = (photoTransform.x / 100) * cw;
+  const offsetY = (photoTransform.y / 100) * ch;
+  
+  // 计算left/top（居中 + 偏移）
+  const left = (cw - renderW) / 2 + offsetX;
+  const top = (ch - renderH) / 2 + offsetY;
+  
+  // 应用到当前模板的图片
+  const currentImg = document.getElementById(`t${currentTemplate}-img`);
+  if (currentImg) {
+    currentImg.style.width = renderW + 'px';
+    currentImg.style.height = renderH + 'px';
+    currentImg.style.left = left + 'px';
+    currentImg.style.top = top + 'px';
+    // 不使用 transform 和 object-fit，避免 html2canvas 比例失真
+  }
+  
+  // 同时同步到其他模板的图片（非当前模板使用默认居中，无缩放）
+  [1, 2, 3].forEach(t => {
+    if (t === currentTemplate) return;
+    const img = document.getElementById(`t${t}-img`);
+    if (!img || !img.src) return;
+    const s = CONTAINER_SIZES[t];
+    const ca = s.w / s.h;
+    let rw, rh;
+    if (imgAspect > ca) {
+      rh = s.h;
+      rw = s.h * imgAspect;
+    } else {
+      rw = s.w;
+      rh = s.w / imgAspect;
+    }
+    img.style.width = rw + 'px';
+    img.style.height = rh + 'px';
+    img.style.left = (s.w - rw) / 2 + 'px';
+    img.style.top = (s.h - rh) / 2 + 'px';
+  });
+}
+
+// 重置照片
+document.getElementById('resetPhoto').addEventListener('click', () => {
+  photoTransform = { scale: 100, x: 0, y: 0 };
+  scaleInput.value = 100;
+  xInput.value = 0;
+  yInput.value = 0;
+  document.getElementById('scaleValue').textContent = '100%';
+  document.getElementById('xValue').textContent = '0';
+  document.getElementById('yValue').textContent = '0';
+  applyPhotoTransform();
+});
+
+// 删除照片
+document.getElementById('removePhoto').addEventListener('click', () => {
+  currentPhoto = null;
+  photoNaturalSize = { w: 0, h: 0 };
+  photoControls.classList.remove('show');
+  photoInput.value = '';
+  
+  ['t1-img', 't2-img', 't3-img'].forEach(id => {
+    const img = document.getElementById(id);
+    img.src = '';
+    img.style.display = 'none';
+    img.style.width = '';
+    img.style.height = '';
+    img.style.left = '';
+    img.style.top = '';
+  });
+  
+  document.querySelectorAll('.photo-placeholder').forEach(p => p.style.display = '');
+});
+
+// 导出功能
+document.getElementById('exportBtn').addEventListener('click', async () => {
+  const currentTpl = document.getElementById(`tpl${currentTemplate}`);
+  if (!currentTpl) return;
+  
+  const loading = document.getElementById('loading');
+  loading.classList.add('show');
+  
+  try {
+    const canvas = await html2canvas(currentTpl, {
+      width: 1080,
+      height: 1440,
+      scale: 1,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: null,
+      logging: false
+    });
+    
+    const link = document.createElement('a');
+    link.download = `GAAAP-小红书封面-${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.click();
+  } catch (err) {
+    alert('导出失败，请重试：' + err.message);
+  } finally {
+    loading.classList.remove('show');
+  }
+});
+
+// 自动缩放预览以适应屏幕
+function autoScalePreview() {
+  const previewArea = document.getElementById('previewArea');
+  const wrapper = document.getElementById('scaleWrapper');
+  const availableWidth = previewArea.clientWidth - 80;
+  const availableHeight = previewArea.clientHeight - 80;
+  const scaleX = availableWidth / 1080;
+  const scaleY = availableHeight / 1440;
+  const scale = Math.min(scaleX, scaleY, 1);
+  wrapper.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', autoScalePreview);
+window.addEventListener('load', autoScalePreview);
+
+// 初始化
+updateText();
+applyFontStyles();
+autoScalePreview();
+</script>
+
+</body>
+</html>
